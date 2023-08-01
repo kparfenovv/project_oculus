@@ -1,0 +1,786 @@
+html{
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after{
+  box-sizing: inherit;
+}
+
+a{
+  color: inherit;
+  text-decoration: none;
+}
+
+li{
+  list-style: none;
+}
+
+img{
+  max-width: 100%;
+}
+
+button {
+   color: inherit;
+   font-size: inherit;
+   background-color: transparent;
+   border: none;
+   cursor: pointer;
+   font-family: inherit;
+   padding: 0;
+}
+
+/* Ширина от 'shop' до 'basket' 1130px. Соответственно берем с запасом 1200px.
+Это нужно для выполнения адаптива.
+Отступы по бокам по 10px => max-width будет 1220px.
+Дальше центрируем блок container.
+ */
+.container {
+  max-width: 1220px;
+  padding: 0 10px;
+  margin: 0 auto;
+}
+
+.section-title {
+  text-transform: uppercase;
+  font-weight: 400;
+  }
+
+body {
+  font-family: 'Helvetica', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.4;
+  color: #5C5C5E;
+  min-width: 320px;
+  overflow-x: hidden;
+}
+
+.header {
+  border-bottom: 1px solid #CACAD6;
+}
+
+/* Устанавливаем flex, выстраиваем по углам блоки и выравниваем.  */
+.nav {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: center;
+  height: 80px;
+}
+
+.menu-btn {
+  width: 40px;
+  height: 30px;
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.menu-btn span {
+  width: 100%;
+  height: 2px;
+  background-color: #000;
+}
+
+.menu {
+  display: flex;
+  gap: 0 20px;
+}
+
+.logo {
+  justify-self: center;
+  display: flex;
+}
+
+.basket {
+  position: relative;
+  justify-self: end;
+}
+
+/* Позиционируем относительно basket, bottom & right - координаты. */
+.basket--on span {
+  font-size: 10px;
+  width: 15px;
+  height: 15px;
+  background-color: #000;
+  border-radius: 50%;
+  position: absolute;
+  color: #fff;
+  bottom: 0;
+  right: -2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Устанавливаем минимальную высоту функцией calc.
+Т.е. из полной высоты вьюпорта вычитаем высоту header, также добавляем 1px к 80 для того,
+чтобы убрать scroll.
+Поднимаем картинку с помощью bottom center */
+.top {
+  min-height: calc(100vh - 81px);
+  background-image: url(../images/top-bg.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: bottom center;
+}
+
+.title {
+  padding-top: 8%; 
+  font-size: 96px;
+  margin-bottom: 10px;
+  font-weight: 400;
+}
+
+.subtitle {
+  margin-bottom: 5px;
+  font-size: 36px;
+}
+
+.top__text {
+  font-size: 13px;
+  margin-bottom: 50px;
+}
+
+.buy__text {
+  padding-top: 6px;
+  font-size: 13px;
+}
+
+.buy-btn {
+  cursor: pointer;
+  border: none;
+  background: linear-gradient(180deg, #BC10D8 0%, rgba(80, 0, 250, 0.93)100%);
+  display: flex;
+  text-transform: uppercase;
+  padding: 1px;
+} 
+
+/* Убираем 1px buy-btn получается 110 */
+.buy-btn__text {
+color: #f6f4f5;
+padding: 20px 110px;
+text-transform: uppercase;
+} 
+
+/* Убираем 1px получается 105 */
+.buy-btn__price {
+background-color: #f6f4f5;
+padding: 20px 105px;
+} 
+
+.features {
+  padding: 100px 0;
+}
+
+.features__titles {
+display: flex;
+}
+
+/* Ширина контейнера 1200px, поэтому flex-basis: 300px.
+padding-right нужен для того, чтобы при увеличении количества контента в блоке
+текст не "прилипал" к следующему блоку. */
+.features__title {
+  flex-basis: 300px;
+  padding-right: 20px;
+}
+
+.features__text {
+  max-width: 330px;
+  text-transform: uppercase;
+  font-size: 36px;
+  margin-bottom: 2px;
+  background: linear-gradient(180deg, #BC10D8 0%, rgba(80, 0, 250, 0.93) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.tabs {
+  display: grid;
+  grid-template-columns: 300px auto;
+}
+
+.tabs__btn {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+
+.tabs__btn-item {
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.tabs__btn-item--active {
+  color: #070707;;
+}
+
+.tabs__content {
+  position: relative;
+  min-height: 300px;
+}
+
+/* Позициониурем относительно tabs__content
+Убираем белое полотно снизу. */
+.tabs__content-item {
+  display: grid;
+  grid-template-columns: auto 280px;
+  grid-template-rows: auto 150px;
+  gap: 40px;
+  opacity: 0;
+  position: absolute;
+  transition: opacity .3s ease;
+}
+
+.tabs__content-item--active {
+  opacity: 1;
+}
+
+/* Растягиваем изображение по всей сетке, чтобы video встало в content-box/
+Добавялем object-fit:cover для того, чтобы при адаптиве картинка пропорционально сжималась (обрезалась по краям) */
+.tabs__content-img {
+  grid-row: 1/-1;
+  align-self: stretch;
+  object-fit: cover;
+}
+
+.tabs__content-box h3 {
+  font-weight: 400;
+  font-size: 24px;
+  margin-bottom: 5px;
+}
+
+/* Опускаем видео вниз с помощью flex, end */
+.video {
+  grid-column: 2/3;
+  width: 280px;
+  height: 150px;
+  background-image: url(../images/content-bg.jpg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  align-items: flex-start;
+  padding: 9px 10px;
+}
+
+/* Отступ по макету 31px, но у нас в .video padding 9px
+=> 31 - 9 = 22px */
+.video__btn {
+margin-left: 22px;
+}
+
+.video span {
+font-size: 13px;
+color: #f6f4f5;
+}
+
+.game {
+  margin-bottom: 100px;
+
+}
+
+.game__title {
+  margin-bottom: 50px;
+}
+
+.game__inner {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+/* Добавляем небольшой отступ, для того, чтобы при увеличении контента, текст не залезал на другой блок  */
+.game__descr {
+  padding-right: 10px;
+}
+
+.game__descr-title {
+  text-transform: uppercase;
+  background: var(--gradient, linear-gradient(180deg, #BC10D8 0%, rgba(80, 0, 250, 0.93) 100%));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+
+.game__descr-text {
+  margin-bottom: 24px;
+}
+
+/* padding установили для того, чтобы при переполнении текстом, он не заходил к краям блока
+В конце background ставим 1, для того, чтобы прорисовалась рамка */
+.game__link {
+  display: inline-block;
+  background: var(--gradient, linear-gradient(180deg, #BC10D8 0%, rgba(80, 0, 250, 0.93) 100%));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 16px 15px 12px;
+  width: 225px;
+  text-align: center;
+  border-image: var(--gradient, linear-gradient(180deg, #BC10D8 0%, rgba(80, 0, 250, 0.93) 100%)) 1;
+}
+
+.game__item {
+  border: 1px solid #BC10D8;
+  border-image: var(--gradient, linear-gradient(180deg, #BC10D8 0%, rgba(80, 0, 250, 0.93) 100%)) 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.game__item-img {
+  margin-bottom: 10px;
+}
+
+.game__item-title {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.game__item-text {
+  margin-bottom: 30px;
+}
+
+.game__item-link {
+  background: var(--gradient, linear-gradient(180deg, #BC10D8 0%, rgba(80, 0, 250, 0.93) 100%));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-top: auto;
+}
+
+.buy {
+  margin-bottom: 110px;
+  text-align: center;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.buy__img {
+  margin-bottom: 30px;
+}
+
+.buy .buy-btn {
+  margin: 0 auto;
+}
+
+.buy__bg {
+font-size: 400px;
+font-weight: 700;
+line-height: 400px;
+opacity: 0.1;
+background: var(--gradient, linear-gradient(180deg, #BC10D8 0%, rgba(80, 0, 250, 0.93) 100%));
+-webkit-background-clip: text;
+background-clip: text;
+-webkit-text-fill-color: transparent;
+position: absolute;
+z-index: -1;
+animation: line-text 6s linear 1s infinite;
+}
+
+@keyframes line-text {
+  from {
+    transform: translateX(115%);
+    transform-origin: left center;
+  }
+  to{
+    transform: translateX(-115%);
+    transform-origin: right center;
+  }
+}
+
+.equipment {
+  margin-bottom: 100px;
+}
+
+.equipment__title {
+  margin-bottom: 50px;
+}
+
+.equipment__box {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  grid-template-rows: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.equipment__box-img {
+  margin-bottom: 10px;
+}
+
+.equipment__box-title {
+background: var(--gradient, linear-gradient(180deg, #BC10D8 0%, rgba(80, 0, 250, 0.93) 100%));
+-webkit-background-clip: text;
+background-clip: text;
+-webkit-text-fill-color: transparent;
+font-size: 36px;
+line-height: 50px;
+text-transform: uppercase;
+}
+
+/* Расширением eq1 сдвигаем 2 соседних блока в 1 линию */
+.equipment__box-item--one {
+  grid-row: 1/-1;
+
+}
+
+.promo {
+  margin-bottom: 100px;
+}
+
+.promo__inner {
+  background-image: url(../images/promo.jpg);
+  min-height: 500px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  text-align: center;
+  position: relative;
+}
+
+.promo__btn {
+  font-weight: 700;
+  color: #fff;
+  background: var(--gradient, linear-gradient(180deg, #BC10D8 0%, rgba(80, 0, 250, 0.93) 100%));
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  bottom: 80px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+}
+
+.accessories {
+  margin-bottom: 100px;
+}
+
+
+.accessorie__title {
+  margin-bottom: 30px;
+}
+
+
+.accessories__text {
+margin-bottom: 30px;
+background: var(--gradient, linear-gradient(180deg, #BC10D8 0%, rgba(80, 0, 250, 0.93) 100%));
+-webkit-background-clip: text;
+background-clip: text;
+-webkit-text-fill-color: transparent;
+font-size: 36px;
+text-transform: uppercase;
+}
+
+
+.accessories__items {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+/* С помощью flex выравниваем buy now по оси х */
+.accessories__item {
+  padding: 20px;
+  border: 1px solid;
+  border-image: var(--gradient, linear-gradient(180deg, #BC10D8 0%, rgba(80, 0, 250, 0.93) 100%)) 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; 
+}
+
+
+.accessories__item-img {
+  margin-bottom: 10px;
+}
+
+/* Прописав min-height, выстраиваем ровно text */
+.accessories__item-title {
+  font-size: 24px;
+  color: #070707;
+  min-height: 67px;
+}
+
+/* Выравниваем блок с ценой по оси x */
+.accessories__item-text {
+  margin-bottom: 35px;
+  margin-top: auto; 
+}
+
+
+.accessories__item-price {
+  font-weight: 700;
+  line-height: 18px;
+  color: #070707;
+  margin-bottom: 20px;
+  margin-top: auto; 
+}
+
+
+.accessories__item-btn {
+  border: 1px solid;
+  border-image: var(--gradient, linear-gradient(180deg, #BC10D8 0%, rgba(80, 0, 250, 0.93) 100%)) 1;
+  padding: 6px;
+  font-weight: 700;
+  background: var(--gradient, linear-gradient(180deg, #BC10D8 0%, rgba(80, 0, 250, 0.93) 100%));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: center;
+  width: 100%;
+}
+
+.contacts {
+  margin-bottom: 100px;
+}
+
+.contacts__title {
+  font-size: 24px;
+  line-height: 33px;
+  color: #070707;
+  margin-bottom: 10px;
+  }
+
+.contacts__inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  }
+
+/* Ширина блока формы */
+.contacts__form {
+  flex-basis: 600px;
+  }
+
+
+.contacts__text {
+  font-size: 13px;
+  }
+
+
+.form {
+  margin-bottom: 10px;
+  position: relative;
+}
+
+/* padding предусмотрен для того, чтобы при переполнении формы текстом, текст не залезал за кнопку. */
+.form__input {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #CACAD6;
+  padding: 22px 70px 22px 0;
+  }
+
+.form__input::placeholder {
+  font-family: 'Helvetica';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 18px;
+  color: #CACAD6;
+}
+
+.form__btn {
+  width: 50px;
+  height: 50px;
+  background-color: #CACAD6;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #5C5C5E;
+  border-radius: 50%;
+  position: absolute;
+  right: 0;
+  bottom: 5px;
+  }
+
+.footer {
+  border-top: 1px solid #CACAD6;
+  border-bottom: 1px solid #CACAD6;
+  margin-bottom: 44px;
+  padding: 30px 0;
+}
+
+.social {
+  display: flex;
+  gap: 20px;
+  justify-self: end;
+}
+
+@media screen and (max-width:1140px) {
+  .footer .menu {
+    display: none;
+  }
+  .footer .nav {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+@media screen and (max-width:992px) {
+  .tabs {
+    display: block;
+  }
+  .tabs__btn {
+    display: block;
+    column-count: 2;
+  }
+  .tabs__btn-item {
+    display: block;
+  }
+  .game__inner {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+  }
+  .accessories__item {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+  }
+}
+
+@media screen and (max-width:820px) {
+  .equipment__box {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  .contacts__inner {
+    display: block;
+  }
+  .contacts__form {
+    margin-bottom: 20px;
+  }
+  .menu-btn {
+    display: flex;
+  }
+  .menu {
+    transform: translateX(-100%);
+    transition: transform .1s;
+    position: absolute;
+    top: 80px;
+    left: 0;
+    right: 0;
+    width: 320px;
+    background-color: #000;
+    color: #fff;
+    padding: 100px 0;
+    align-items: center;
+    flex-direction: column;
+  }
+  .menu.menu--active {
+    transform: translateX(0%);
+  }
+  .menu__link {
+    font-size: 24px;
+    padding: 10px 0;
+    display: inline-block;
+  }
+}
+
+@media screen and (max-width:768px) {
+  .title {
+    font-size: 66px;
+  }
+  .subtitle {
+    font-size: 24px;
+  }
+}
+
+@media screen and (max-width:640px) {
+  .buy-btn {
+    flex-direction: column;
+    margin: 0 auto;
+  }
+  .top {
+    text-align: center;
+  }
+}
+
+@media screen and (max-width:568px) {
+  .title {
+    font-size: 66px;
+  }
+  .subtitle {
+    font-size: 24px;
+  }
+  .buy-btn {
+    flex-direction: column;
+    margin: 0 auto;
+  }
+  .top {
+    text-align: center;
+  }
+  .features__titles {
+    display: block;
+  }
+  .tabs__content-item {
+    display: block;
+    height: 0;
+    position: relative;
+  }
+  .tabs__content-item--active {
+    height: auto;
+  }
+  .video {
+    width: auto;
+    height: 250px;
+    margin-top: 20px;
+  }
+  .game__inner {
+    grid-template-columns: repeat(1, 1fr);
+    gap: 25px;
+  }
+  .equipment__box {
+    display: block;
+  }
+  .equipment__box-img {
+    width: 100%;
+  }
+  .equipment__box-text {
+    margin-bottom: 10px;
+  }
+  .accessories__item {
+    grid-template-columns: repeat(1, 1fr);
+    gap: 20px;
+  }
+  .accessories__text {
+    font-size: 28px;
+  }
+  .nav {
+    grid-template-columns: 1fr 2fr 1fr;
+  }
+  .footer .nav {
+    flex-direction: column;
+    height: auto;
+  }
+  .social {
+    order: -1;
+    margin-bottom: 20px;
+    gap: 30px;
+  }
+}
+
+@media screen and (max-width:420px) {
+  .title {
+    font-size: 48px;
+  }
+  .subtitle {
+    font-size: 20px;
+  }
+  .tabs__btn {
+    column-count: 1;
+  }
+  .features__text {
+    font-size: 32px;
+  }
+  .menu {
+    width: 100%;
+  }
+}
